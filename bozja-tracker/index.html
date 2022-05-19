@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<style>
+body
+{
+	background-color: #222222;
+	color: #eeeeee;
+	font-family: sans-serif;
+	font-size: 14px;
+
+}
+
+.tracker-row
+{
+	background-color: #333333;
+}
+
+.x1 img
+{
+	filter: grayscale(50%);
+}
+
+.x1
+{
+	background-color: #2a2a2a;
+}
+
+.x1 > *
+{
+	opacity: 50%;
+}
+
+.x1 + tr > td
+{
+	background-color: #2a2a2a;
+}
+
+#tracker-table > tbody > tr > td
+{
+	text-align: center;
+}
+
+.rank-text, .duel-text
+{
+	font-size: 11px;
+	display: block;
+	text-align: center;
+}
+
+/* mob image */
+.tracker-row > td:nth-child(1)
+{
+	width: 48px;
+}
+
+/* mob name */
+.tracker-row > td:nth-child(2)
+{
+	width: 80px;
+	font-weight: bold;
+}
+
+/* arrow */
+.tracker-row > td:nth-child(3),
+.tracker-row > td:nth-child(6),
+.tracker-row > td:nth-child(9)
+{
+	width: 24px;
+}
+
+/* event icon */
+.tracker-row > td:nth-child(4),
+.tracker-row > td:nth-child(7),
+.tracker-row > td:nth-child(10)
+{
+	width: 32px;
+}
+
+/* event name */
+.tracker-row > td:nth-child(5),
+.tracker-row > td:nth-child(8),
+.tracker-row > td:nth-child(11)
+{
+	width: 112px;
+	font-size: 12px;
+}
+
+.btn
+{
+	border: none;
+	color: white;
+	font-weight: bold;
+	font-size: 12px;
+	padding: 12px 12px;
+	width: 80px;
+}
+
+.pop-btn
+{
+	background-color: #436fa2;
+	transition: background-color .15s ease-in-out;
+	cursor: pointer;
+}
+
+.pop-btn:hover
+{
+	background-color: #6c95cb;
+}
+
+.pop-reset-btn
+{
+	padding: 0 0 0 12px;
+}
+
+.reset-btn
+{
+	background-color: #a24343;
+	transition: background-color .15s ease-in-out;
+	cursor: pointer;
+}
+
+.reset-btn:hover
+{
+	background-color: #dc7773;
+}
+
+.tracker
+{
+	display: flex;
+	padding: 0 4px;
+	margin: 0 4px;
+}
+
+.tracker-row
+{
+	transition: background-color .25s ease-in-out, color .25s ease-in-out;
+}
+
+.tracker-row-img
+{
+	transition: filter .25s ease-in-out;
+}
+
+.tracker-row-active
+{
+	background-color: #2c2c2c;
+	color: #aaaaaa;
+}
+
+.tracker-row-active img
+{
+	filter: grayscale(75%);
+}
+
+.meter
+{
+	position: relative;
+	height: 20px;
+}
+
+.meter-text-container
+{
+	font-size: 14px;
+	display: block;
+	text-align:center;
+}
+
+.meter-text
+{
+	color:white;
+	font-weight: bold;
+	text-shadow: #111111 0 0 4px;
+}
+
+.meter-outer
+{
+	position: relative;
+	min-width: 100px;
+	height: 12px;
+	background-image: linear-gradient(to right, #bf4c4c, #bf4c4c, #bf4c4c, #bf4c4c, #bfbf4c, #4cbf4c);
+	overflow: hidden;
+	border-radius: 8px;
+}
+
+.meter-inactive .meter-outer
+{
+	background-image: linear-gradient(to right, #555555, #555555);
+}
+
+.meter-full .meter-outer
+{
+	background-image: linear-gradient(to right, #4cbf4c, #4cbf4c);
+}
+
+.meter-inner
+{
+	position: absolute;
+	right: 0;
+	width: 100%;
+	height: 18px;
+	background-color: #555555;
+	transition: width .5s ease-in-out;
+}
+
+a
+{
+	color: #999999;
+	font-size: 18px;
+}
+</style>
+<script>
+bozja_data = {
+	"bozja1a": {
+		"zone": 1,
+		"mob": "Roader",
+		"mob_rank": 3,
+		"series": [
+			{"type": "ce", "name": "The Shadow of Death's Hand"}
+		]
+	},
+
+	"bozja1b": {
+		"zone": 1,
+		"mob": "Deathclaw",
+		"mob_rank": 2,
+		"series": [
+			{"type": "ce", "name": "The Baying of the Hound(s)"}
+		]
+	},
+
+	"bozja1c": {
+		"zone": 1,
+		"mob": "Nimrod",
+		"mob_rank": 1,
+		"series": [
+			{"type": "skirmish", "name": "All Pets Are Off"},
+			{"type": "ce", "name": "Kill It with Fire"}
+		]
+	},
+
+	"bozja1d": {
+		"zone": 1,
+		"mob": "Slasher",
+		"mob_rank": 3,
+		"series": [
+			{"type": "skirmish", "name": "More Machine Now than Man"},
+			{"type": "ce", "name": "Vigil for the Lost"},
+			{"type": "duel", "name": "Aces High"}
+		]
+	},
+
+	"bozja2a": {
+		"zone": 2,
+		"mob": "Avenger",
+		"mob_rank": 2,
+		"series": [
+			{"type": "skirmish", "name": "Unicorn Flakes"},
+			{"type": "ce", "name": "The Final Furlong"}
+		]
+	},
+
+	"bozja2b": {
+		"zone": 2,
+		"mob": "Gunship",
+		"mob_rank": 2,
+		"series": [
+			{"type": "ce", "name": "The Fires of War"},
+			{"type": "ce", "name": "Patriot Games"}
+		]
+	},
+
+	"bozja2c": {
+		"zone": 2,
+		"mob": "Vanguard",
+		"mob_rank": 2,
+		"series": [
+			{"type": "skirmish", "name": "Red (Chocobo) Alert"},
+			{"type": "ce", "name": "The Hunt for Red Choctober"},
+			{"type": "duel", "name": "Beast of Man"}
+		]
+	},
+
+	"bozja3a": {
+		"zone": 3,
+		"mob": "Hexadrone",
+		"mob_rank": 1,
+		"series": [
+			{"type": "skirmish", "name": "I'm a Mechanical Man"},
+			{"type": "ce", "name": "Rise of the Robots"}
+		]
+	},
+
+	"bozja3b": {
+		"zone": 3,
+		"mob": "Armored Weapon",
+		"mob_rank": 2,
+		"series": [
+			{"type": "ce", "name": "Trampled under Hoof"},
+			{"type": "ce", "name": "Where Strode the Behemoth"}
+		]
+	},
+
+	"bozja3c": {
+		"zone": 3,
+		"mob": "Scorpion",
+		"mob_rank": 3,
+		"series": [
+			{"type": "skirmish", "name": "For Absent Friends, Of Steel and Flame"},
+			{"type": "ce", "name": "Metal Fox Chaos"},
+			{"type": "duel", "name": "And the Flames Went Higher"}
+		]
+	}
+};
+
+zadnor_data = {
+	"zadnor1a": {
+		"zone": 1,
+		"mob": "Nimrod",
+		"mob_rank": 1,
+		"series": [
+			{"type": "ce", "name": "With Diremite and Main"}
+		]
+	},
+
+	"zadnor1b": {
+		"zone": 1,
+		"mob": "Infantry",
+		"mob_rank": 2,
+		"series": [
+			{"type": "ce", "name": "From Beyond The Grave"}
+		]
+	},
+
+	"zadnor1c": {
+		"zone": 1,
+		"mob": "Gunship",
+		"mob_rank": 3,
+		"series": [
+			{"type": "skirmish", "name": "An Immoral Dilemma"},
+			{"type": "ce", "name": "On Serpent's Wings"}
+		]
+	},
+
+	"zadnor1d": {
+		"zone": 1,
+		"mob": "Hexadrone",
+		"mob_rank": 3,
+		"series": [
+			{"type": "skirmish", "name": "Another Pilot Episode"},
+			{"type": "ce", "name": "A Familiar Face"},
+			{"type": "duel", "name": "The Broken Blade"}
+		]
+	},
+
+	"zadnor2a": {
+		"zone": 2,
+		"mob": "Satellite",
+		"mob_rank": 3,
+		"series": [
+			{"type": "ce", "name": "There Would Be Blood"}
+		]
+	},
+
+	"zadnor2b": {
+		"zone": 2,
+		"mob": "Colossus",
+		"mob_rank": 3,
+		"series": [
+			{"type": "ce", "name": "Time to Burn"}
+		]
+	},
+
+	"zadnor2c": {
+		"zone": 2,
+		"mob": "Armored Weapon",
+		"mob_rank": 2,
+		"series": [
+			{"type": "skirmish", "name": "Tanking Up"},
+			{"type": "ce", "name": "Here Comes The Cavalty"}
+		]
+	},
+
+	"zadnor2d": {
+		"zone": 2,
+		"mob": "Death-machine",
+		"mob_rank": 1,
+		"series": [
+			{"type": "skirmish", "name": "An End to Atrocities"},
+			{"type": "ce", "name": "Never Cry Wolf"},
+			{"type": "duel", "name": "Head of the Snake"}
+		]
+	},
+
+	"zadnor3a": {
+		"zone": 3,
+		"mob": "Helldiver",
+		"mob_rank": 3,
+		"series": [
+			{"type": "ce", "name": "Lean, Mean, Magitek Machines"}
+		]
+	},
+
+	"zadnor3b": {
+		"zone": 3,
+		"mob": "Cavalry",
+		"mob_rank": 3,
+		"series": [
+			{"type": "ce", "name": "Looks to Die For"}
+		]
+	},
+
+	"zadnor3c": {
+		"zone": 3,
+		"mob": "Roader",
+		"mob_rank": 2,
+		"series": [
+			{"type": "skirmish", "name": "The Beasts are Back"},
+			{"type": "ce", "name": "Worn to a Shadow"}
+		]
+	},
+
+	"zadnor3d": {
+		"zone": 3,
+		"mob": "Rearguard",
+		"mob_rank": 1,
+		"series": [
+			{"type": "skirmish", "name": "Hypertuned Havoc, Attack of the Supersoldiers"},
+			{"type": "ce", "name": "Feeling the Burn"},
+			{"type": "duel", "name": "Taking the Lyon's Share"}
+		]
+	},
+
+};
+
+title_str = "???";
+
+if (window.location.hash == "#zadnor")
+{
+	tracker_data = zadnor_data;
+	title_str = "Zadnor";
+}
+else
+{
+	tracker_data = bozja_data;
+	title_str = "Bozja";
+}
+
+duel_bosses = {
+	"Aces High": "Gabriel",
+	"Beast of Man": "Lyon",
+	"And the Flames Went Higher": "Sartauvoir",
+	"The Broken Blade": "Dabog",
+	"Head of the Snake": "Menenius",
+	"Taking the Lyon's Share": "Lyon"
+};
+
+tracker_times = {};
+
+function time() { return Math.floor(new Date().getTime() / 1000); }
+
+function tpl_eval(f, x)
+{
+	try {
+		return f(x);
+	} catch (ex) {
+		return "#" + ex + "#";
+	}
+}
+
+function substitute_tpl(/** @type {NodeList} */ nodelist, f)
+{
+	for (let i = 0; i < nodelist.length; ++i) {
+		let node = nodelist[i];
+
+		if (node.nodeType == 3 /*TEXT_NODE*/) {
+			node.nodeValue = node.nodeValue.replace(/{html:{(.+?)}}/g, (m, x1) => {
+				let tmp = document.createElement('div');
+				tmp.innerHTML = tpl_eval(f, x1);
+				for (let ii = 0; ii < tmp.children.length; ++ii)
+					node.parentNode.appendChild(tmp.children[i]);
+				return "";
+			});
+
+			node.nodeValue = node.nodeValue.replace(/{node:{(.+?)}}/g, (m, x1) => {
+				let tmp = tpl_eval(f, x1);
+				if (tmp !== null)
+					node.parentNode.appendChild(tmp);
+				return "";
+			});
+
+			node.nodeValue = node.nodeValue.replace(/{{(.+?)}}/g, (m, x1) => {
+				let tmp = tpl_eval(f, x1);
+
+				if (tmp instanceof Element)
+				{
+					node.parentNode.appendChild(tmp);
+					return "";
+				}
+
+				if (tmp === undefined || tmp === null)
+					return "";
+
+				return tmp;
+			});
+		} else if (node.nodeType == 2 /*ATTRIBUTE_NODE*/) {
+			node.value = node.value.replace(/{{(.+?)}}/g, (m, x1) => tpl_eval(f, x1));
+		} else if (node.nodeType == 1 /*ELEMENT_NODE*/) {
+			/** @type {Element} */ let elem = node;
+			substitute_tpl(elem.attributes, f);
+			substitute_tpl(node.childNodes, f);
+		}
+	}
+}
+
+function add_series(/** @type {HTMLTableRowElement} */row_elem, entry)
+{
+	/** @type {HTMLTemplateElement} */ let tpl = document.getElementById('tracker-row-series-tpl');
+	/** @type {DocumentFragment} */ let frag = tpl.content.cloneNode(true);
+
+	while (frag.children.length > 0) {
+		/** @type {HTMLTableCellElement} */ let cell = frag.children[0];
+		let duel_text = null;
+
+		if (entry.type == "duel") {
+			duel_text = document.createElement("span");
+			duel_text.className = "duel-text";
+			duel_text.innerText = "(" + duel_bosses[entry.name] + ")";
+		}
+
+		substitute_tpl(cell.childNodes, (x) => eval(x));
+		row_elem.append(cell);
+	}
+}
+
+function add_dummy_series(/** @type {HTMLTableRowElement} */row_elem)
+{
+	/** @type {HTMLTemplateElement} */ let tpl = document.getElementById('tracker-row-dummy-series-tpl');
+	/** @type {DocumentFragment} */ let frag = tpl.content.cloneNode(true);
+
+	while (frag.children.length > 0) {
+		/** @type {HTMLTableCellElement} */ let cell = frag.children[0];
+		substitute_tpl(cell.childNodes, (x) => eval(x));
+		row_elem.append(cell);
+	}
+}
+
+function add_tail(/** @type {HTMLTableRowElement} */row_elem, /** @type {string} */ k)
+{
+	/** @type {HTMLTemplateElement} */ let tpl = document.getElementById('tracker-row-tail-tpl');
+	/** @type {DocumentFragment} */ let frag = tpl.content.cloneNode(true);
+
+	while (frag.children.length > 0) {
+		/** @type {HTMLTableCellElement} */ let cell = frag.children[0];
+		substitute_tpl(cell.childNodes, (x) => eval(x));
+		row_elem.append(cell);
+	}
+}
+
+function add_row(k, row)
+{
+	/** @type {HTMLTemplateElement} */ let tpl = document.getElementById('tracker-row-tpl');
+	/** @type {DocumentFragment} */ let frag = tpl.content.cloneNode(true);
+	/** @type {HTMLTableRowElement} */ let row_elem = frag.firstElementChild;
+
+	substitute_tpl(frag.children, (x) => eval(x));
+
+	let i = 0;
+
+	for (; i < row.series.length; ++i)
+		add_series(row_elem, row.series[i]);
+
+	for (; i < 3; ++i)
+		add_dummy_series(row_elem);
+
+	add_tail(row_elem, k);
+
+	/** @type {HTMLTableElement} */ let table = document.getElementById('tracker-table');
+
+	if (table.tBodies.length == 0)
+		table.appendChild(document.createElement('tbody'));
+
+	let tbody = table.tBodies[0];
+	tbody.append(row_elem);
+}
+
+function add_zone_header(zone_number)
+{
+	/** @type {HTMLTemplateElement} */ let tpl =  document.getElementById('zone-header-tpl');
+	/** @type {DocumentFragment} */ let frag = tpl.content.cloneNode(true);
+	/** @type {HTMLTableRowElement} */ let row_elem = frag.firstElementChild;
+
+	substitute_tpl(frag.children, (x) => eval(x));
+
+	/** @type {HTMLTableElement} */ let table = document.getElementById('tracker-table');
+
+	if (table.tBodies.length == 0)
+		table.appendChild(document.createElement('tbody'));
+
+	let tbody = table.tBodies[0];
+	tbody.append(row_elem);
+}
+
+function reset_rows()
+{
+	var title_elems = document.getElementById('container').getElementsByTagName('h1');
+
+	if (title_elems.length > 0)
+		title_elems[0].remove();
+
+	/** @type {HTMLTableElement} */ let table = document.getElementById('tracker-table');
+
+	if (table.tBodies.length > 0)
+		table.tBodies[0].remove();
+
+	table.appendChild(document.createElement('tbody'));
+}
+
+function update_data(force = false)
+{
+	let now = time();
+	let cooldown = 3600;
+
+	let add_btn = (/** @type {HTMLElement} */ container, /** @type {string} */ name) => {
+		/** @type {HTMLTemplateElement} */ let tpl = document.getElementById(name);
+		/** @type {DocumentFragment} */ let frag = tpl.content.cloneNode(true);
+		/** @type {HTMLElement} */ let btn_elem = frag.firstElementChild;
+		container.replaceChildren(btn_elem);
+		return btn_elem;
+	};
+
+	for (let k in tracker_data)
+	{
+		if (!(k in tracker_times))
+			tracker_times[k] = 0;
+
+		let remaining = (tracker_times[k] + cooldown) - now - 1;
+
+		if (tracker_times[k] == 0)
+			remaining = -1;
+		else if (remaining < 0)
+			remaining = 0;
+
+		/** @type {HTMLElement} */ let tracker = document.getElementById("tracker-" + k);
+		if (!tracker) return;
+
+		/** @type {HTMLElement} */ let tracker_row = tracker.parentElement.parentElement;
+
+		/** @type {HTMLElement} */ let btn_container = tracker.getElementsByClassName("pop-reset-btn")[0];
+
+		let add_reset_button = () => {
+			let reset_action = (e) => {
+				tracker_times[k] = 0;
+				/** @type {HTMLElement} */ let meter = tracker.getElementsByClassName("meter")[0];
+				/** @type {HTMLElement} */ let meter_text = meter.getElementsByClassName("meter-text")[0];
+				if (meter)
+					meter.classList.replace('meter-active', 'meter-inactive');
+				if (meter_text)
+					meter_text.innerHTML = "&nbsp;";
+				tracker_row.classList.replace('tracker-row-active', 'tracker-row-inactive');
+				update_data();
+			};
+
+			if (btn_container && btn_container.getElementsByClassName("reset-btn").length == 0)
+			{
+				/** @type {HTMLButtonElement} */ let btn = add_btn(btn_container, "btn-reset-tpl");
+				btn.onclick = reset_action;
+			}
+		};
+
+		let add_pop_button = () => {
+			let pop_action = (e) => {
+				tracker_times[k] = time();
+				update_data();
+			};
+
+			if (btn_container && btn_container.getElementsByClassName("pop-btn").length == 0)
+			{
+				/** @type {HTMLButtonElement} */ let btn = add_btn(btn_container, "btn-pop-tpl");
+				btn.onclick = pop_action;
+			}
+		};
+
+		if (remaining >= 0 && (force || remaining < 60 || remaining % 10 == 9))
+		{
+			/** @type {HTMLElement} */ let meter = tracker.getElementsByClassName("meter")[0];
+			/** @type {HTMLElement} */ let meter_text = meter.getElementsByClassName("meter-text")[0];
+
+			if (remaining >= 60)
+				meter_text.innerText = Math.floor(remaining / 60) + 'm';
+			else if (remaining >= 1)
+				meter_text.innerText = Math.floor(remaining) + 's';
+			else
+				meter_text.innerHTML = '<small>Available</small>';
+
+			/** @type {HTMLElement} */ let meter_outer = meter.getElementsByClassName("meter-outer")[0];
+			/** @type {HTMLElement} */ let meter_inner = meter.getElementsByClassName("meter-inner")[0];
+
+			if (remaining > 0) {
+				if (meter.classList.contains('meter-inactive'))
+					meter.classList.replace('meter-inactive', 'meter-active');
+
+				let pct = Math.floor(remaining / cooldown * 100);
+				meter_inner.style.width = pct + "%";
+				add_reset_button();
+				tracker_row.classList.replace('tracker-row-inactive', 'tracker-row-active');
+			} else {
+				meter.classList.replace('meter-active', 'meter-full');
+				meter_inner.style.width = "0%";
+				add_pop_button();
+				tracker_row.classList.replace('tracker-row-active', 'tracker-row-inactive');
+			}
+		}
+
+		if (remaining == -1)
+			add_pop_button();
+	}
+}
+
+function populate_rows()
+{
+	let last_zone = 0;
+
+	let title_h1 = document.createElement('h1');
+	title_h1.innerText = title_str;
+	document.getElementById('container').prepend(title_h1);
+
+	for (let k in tracker_data) {
+		let row = tracker_data[k];
+
+		if (row.zone != last_zone) {
+			last_zone = row.zone;
+			add_zone_header(row.zone);
+		}
+
+		add_row(k, row);
+	}
+
+	update_data(true);
+}
+
+document.addEventListener("DOMContentLoaded", () => populate_rows());
+
+window.addEventListener('hashchange', () => {
+	console.log(window.location.hash);
+
+	if (window.location.hash == "#zadnor")
+	{
+		tracker_data = zadnor_data;
+		title_str = "Zadnor";
+	}
+	else if (window.location.hash == "#bozja")
+	{
+		tracker_data = bozja_data;
+		title_str = "Bozja";
+	}
+
+	reset_rows();
+	populate_rows();
+})
+
+setInterval(update_data, 1000);
+
+</script>
+<div id="container">
+	<table id="tracker-table" cellspacing=0 cellpadding=4>
+		<tbody></tbody>
+	</table>
+	<br>
+	<a href="#bozja">Bozja</a> | <a href="#zadnor">Zadnor</a>
+</div>
+<template id="zone-header-tpl">
+	<tr class="zone-header-row">
+		<td colspan="12" style="text-align:left; font-size:16px; font-weight: bold; padding-top:12px;">Zone {{zone_number}}</td>
+	</tr>
+</template>
+<template id="tracker-row-tpl">
+	<tr class="tracker-row tracker-row-inactive">
+		<td><img src="{{row.mob}}.png" loading="lazy" width=48 height=48></td>
+		<td>{{row.mob}}<br><img src="rank{{row.mob_rank}}.png" loading="lazy" title="Rank {{rank_names[row.mob_rank]}}"></td>
+	</tr>
+</template>
+<template id="tracker-row-series-tpl">
+	<td><img src="tbl-arrow.png" loading="lazy" width=24 height=48></td>
+	<td><img src="{{entry.type}}.png" loading="lazy" width=32 height=32></td>
+	<td>{{entry.name}}{{duel_text}}</td>
+</template>
+<template id="tracker-row-dummy-series-tpl">
+	<td></td>
+	<td></td>
+	<td></td>
+</template>
+<template id="btn-pop-tpl">
+	<button class="btn pop-btn">Pop</button>
+</template>
+<template id="btn-reset-tpl">
+	<button class="btn reset-btn">Reset</button>
+</template>
+<template id="tracker-row-tail-tpl">
+	<td>
+		<div id="tracker-{{k}}" class="tracker">
+			<div class="meter meter-inactive">
+				<span class="meter-text-container">
+					<span class="meter-text">&nbsp;</span>
+				</span>
+				<div class="meter-outer">
+					<div class="meter-inner"></div>
+				</div>
+			</div>
+			<div class="pop-reset-btn"></div>
+		</div>
+	</td>
+</template>
