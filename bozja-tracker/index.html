@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<title>Bozja Tracker</title>
 <style>
 body
 {
@@ -201,6 +202,14 @@ body
 	transition: width .5s ease-in-out;
 }
 
+.icon-img
+{
+	position: relative;
+	left: 22px;
+	top: -12px;
+	padding: 0 2px;
+}
+
 a
 {
 	color: #999999;
@@ -221,16 +230,16 @@ bozja_data = {
 	"bozja1b": {
 		"zone": 1,
 		"mob": "Deathclaw",
-		"mob_rank": 2,
+		"mob_rank": 3,
 		"series": [
-			{"type": "ce", "name": "The Baying of the Hound(s)"}
+			{"type": "ce", "name": "The Baying of the Hound(s)", "icon": "Steelsting"}
 		]
 	},
 
 	"bozja1c": {
 		"zone": 1,
 		"mob": "Nimrod",
-		"mob_rank": 1,
+		"mob_rank": 2,
 		"series": [
 			{"type": "skirmish", "name": "All Pets Are Off"},
 			{"type": "ce", "name": "Kill It with Fire"}
@@ -240,11 +249,11 @@ bozja_data = {
 	"bozja1d": {
 		"zone": 1,
 		"mob": "Slasher",
-		"mob_rank": 3,
+		"mob_rank": 1,
 		"series": [
 			{"type": "skirmish", "name": "More Machine Now than Man"},
-			{"type": "ce", "name": "Vigil for the Lost"},
-			{"type": "duel", "name": "Aces High"}
+			{"type": "ce", "name": "Vigil for the Lost", "icon": "Spellforge"},
+			{"type": "duel", "name": "Aces High", "icon": "Spellforge"}
 		]
 	},
 
@@ -261,17 +270,17 @@ bozja_data = {
 	"bozja2b": {
 		"zone": 2,
 		"mob": "Gunship",
-		"mob_rank": 2,
+		"mob_rank": 3,
 		"series": [
-			{"type": "ce", "name": "The Fires of War"},
-			{"type": "ce", "name": "Patriot Games"}
+			{"type": "ce", "name": "The Fires of War", "icon": "Steelsting"},
+			{"type": "ce", "name": "Patriot Games", "icon": "Spellforge"}
 		]
 	},
 
 	"bozja2c": {
 		"zone": 2,
 		"mob": "Vanguard",
-		"mob_rank": 2,
+		"mob_rank": 1,
 		"series": [
 			{"type": "skirmish", "name": "Red (Chocobo) Alert"},
 			{"type": "ce", "name": "The Hunt for Red Choctober"},
@@ -285,7 +294,7 @@ bozja_data = {
 		"mob_rank": 1,
 		"series": [
 			{"type": "skirmish", "name": "I'm a Mechanical Man"},
-			{"type": "ce", "name": "Rise of the Robots"}
+			{"type": "ce", "name": "Rise of the Robots", "icon": "Spellforge"}
 		]
 	},
 
@@ -294,7 +303,7 @@ bozja_data = {
 		"mob": "Armored Weapon",
 		"mob_rank": 2,
 		"series": [
-			{"type": "ce", "name": "Trampled under Hoof"},
+			{"type": "ce", "name": "Trampled under Hoof", "icon": "Steelsting"},
 			{"type": "ce", "name": "Where Strode the Behemoth"}
 		]
 	},
@@ -305,7 +314,7 @@ bozja_data = {
 		"mob_rank": 3,
 		"series": [
 			{"type": "skirmish", "name": "For Absent Friends, Of Steel and Flame"},
-			{"type": "ce", "name": "Metal Fox Chaos"},
+			{"type": "ce", "name": "Metal Fox Chaos", "icon": "Spellforge"},
 			{"type": "duel", "name": "And the Flames Went Higher"}
 		]
 	}
@@ -326,7 +335,7 @@ zadnor_data = {
 		"mob": "Infantry",
 		"mob_rank": 2,
 		"series": [
-			{"type": "ce", "name": "From Beyond The Grave"}
+			{"type": "ce", "name": "From Beyond the Grave", "icon": "Steelsting"}
 		]
 	},
 
@@ -336,7 +345,7 @@ zadnor_data = {
 		"mob_rank": 3,
 		"series": [
 			{"type": "skirmish", "name": "An Immoral Dilemma"},
-			{"type": "ce", "name": "On Serpent's Wings"}
+			{"type": "ce", "name": "On Serpent's Wings", "icon": "Steelsting"}
 		]
 	},
 
@@ -346,7 +355,7 @@ zadnor_data = {
 		"mob_rank": 3,
 		"series": [
 			{"type": "skirmish", "name": "Another Pilot Episode"},
-			{"type": "ce", "name": "A Familiar Face"},
+			{"type": "ce", "name": "A Familiar Face", "icon": "Steelsting"},
 			{"type": "duel", "name": "The Broken Blade"}
 		]
 	},
@@ -356,7 +365,7 @@ zadnor_data = {
 		"mob": "Satellite",
 		"mob_rank": 3,
 		"series": [
-			{"type": "ce", "name": "There Would Be Blood"}
+			{"type": "ce", "name": "There Would Be Blood", "icon": "Steelsting"}
 		]
 	},
 
@@ -365,7 +374,7 @@ zadnor_data = {
 		"mob": "Colossus",
 		"mob_rank": 3,
 		"series": [
-			{"type": "ce", "name": "Time to Burn"}
+			{"type": "ce", "name": "Time to Burn", "icon": "Steelsting"}
 		]
 	},
 
@@ -375,7 +384,7 @@ zadnor_data = {
 		"mob_rank": 2,
 		"series": [
 			{"type": "skirmish", "name": "Tanking Up"},
-			{"type": "ce", "name": "Here Comes The Cavalty"}
+			{"type": "ce", "name": "Here Comes The Cavalry", "icon": "Spellforge"}
 		]
 	},
 
@@ -385,7 +394,7 @@ zadnor_data = {
 		"mob_rank": 1,
 		"series": [
 			{"type": "skirmish", "name": "An End to Atrocities"},
-			{"type": "ce", "name": "Never Cry Wolf"},
+			{"type": "ce", "name": "Never Cry Wolf", "icon": "Steelsting"},
 			{"type": "duel", "name": "Head of the Snake"}
 		]
 	},
@@ -395,7 +404,7 @@ zadnor_data = {
 		"mob": "Helldiver",
 		"mob_rank": 3,
 		"series": [
-			{"type": "ce", "name": "Lean, Mean, Magitek Machines"}
+			{"type": "ce", "name": "Lean, Mean, Magitek Machines", "icon": "Spellforge"}
 		]
 	},
 
@@ -404,14 +413,14 @@ zadnor_data = {
 		"mob": "Cavalry",
 		"mob_rank": 3,
 		"series": [
-			{"type": "ce", "name": "Looks to Die For"}
+			{"type": "ce", "name": "Looks to Die For", "icon": "Steelsting"}
 		]
 	},
 
 	"zadnor3c": {
 		"zone": 3,
 		"mob": "Roader",
-		"mob_rank": 2,
+		"mob_rank": 1,
 		"series": [
 			{"type": "skirmish", "name": "The Beasts are Back"},
 			{"type": "ce", "name": "Worn to a Shadow"}
@@ -421,14 +430,13 @@ zadnor_data = {
 	"zadnor3d": {
 		"zone": 3,
 		"mob": "Rearguard",
-		"mob_rank": 1,
+		"mob_rank": 2,
 		"series": [
 			{"type": "skirmish", "name": "Hypertuned Havoc, Attack of the Supersoldiers"},
-			{"type": "ce", "name": "Feeling the Burn"},
+			{"type": "ce", "name": "Feeling the Burn", "icon": "Spellforge"},
 			{"type": "duel", "name": "Taking the Lyon's Share"}
 		]
 	},
-
 };
 
 title_str = "???";
@@ -480,13 +488,6 @@ function substitute_tpl(/** @type {NodeList} */ nodelist, f)
 				return "";
 			});
 
-			node.nodeValue = node.nodeValue.replace(/{node:{(.+?)}}/g, (m, x1) => {
-				let tmp = tpl_eval(f, x1);
-				if (tmp !== null)
-					node.parentNode.appendChild(tmp);
-				return "";
-			});
-
 			node.nodeValue = node.nodeValue.replace(/{{(.+?)}}/g, (m, x1) => {
 				let tmp = tpl_eval(f, x1);
 
@@ -518,7 +519,16 @@ function add_series(/** @type {HTMLTableRowElement} */row_elem, entry)
 
 	while (frag.children.length > 0) {
 		/** @type {HTMLTableCellElement} */ let cell = frag.children[0];
-		let duel_text = null;
+		/** @type {HTMLSpanElement} */ let duel_text = null;
+		/** @type {HTMLImageElement} */ let icon_img = null;
+
+		if ("icon" in entry) {
+			icon_img = document.createElement("img");
+			icon_img.className = "icon-img";
+			icon_img.src = entry.icon + ".png";
+			icon_img.title = entry.icon;
+			icon_img.width = 11;
+		}
 
 		if (entry.type == "duel") {
 			duel_text = document.createElement("span");
@@ -780,7 +790,7 @@ setInterval(update_data, 1000);
 </template>
 <template id="tracker-row-series-tpl">
 	<td><img src="tbl-arrow.png" loading="lazy" width=24 height=48></td>
-	<td><img src="{{entry.type}}.png" loading="lazy" width=32 height=32></td>
+	<td><img src="{{entry.type}}.png" loading="lazy" width=32 height=32><div style="width: 0; height: 0; position: relative;">{{icon_img}}</div></td>
 	<td>{{entry.name}}{{duel_text}}</td>
 </template>
 <template id="tracker-row-dummy-series-tpl">
