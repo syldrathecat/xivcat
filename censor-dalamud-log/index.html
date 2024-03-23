@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<title>Censor dalamud.log file</title>
+<script>
+var evilplogonregex = "([Ll]oporrit|Snapper)";
+
+function censor()
+{
+	var log = log1.value.split(/\r?\n|\r|\n/g);
+	var len = log.length;
+	lc1.innerText = len + " lines";
+	var clog = [];
+	var censoring = false;
+	for (var i = 0; i < len; ++i)
+	{
+		var line = log[i];
+		if (censoring && line.match("^ "))
+			continue;
+		if (line.match(evilplogonregex))
+		{
+			censoring = true;
+			continue;
+		}
+		else if ((b64line = line.match(" (TROUBLESHOOTING|LASTEXCEPTION):(.+)")))
+		{
+			censoring = false;
+			if (atob(b64line[2]).match(evilplogonregex))
+				continue;
+			clog.push(line);
+		}
+		else
+		{
+			censoring = false;
+			clog.push(line);
+		}
+	}
+	var clen = clog.length;
+	log2.value = clog.join("\n");
+	lc2.innerText = clen + " lines";
+	cstatus.innerText = "Removed " + (len - clen) + " lines from log file!";
+}
+</script>
+<style>
+body { font-family: sans-serif; }
+#status { color: grey; }
+#lc1, #lc2 { font-size: 90%; }
+#censorpls { font-weight: bold; }
+</style>
+<h1>Censor dalamud.log file</h1>
+<p>Step 1) Paste log file here:</p>
+<textarea id="log1" rows=10 cols=100></textarea> <span id="lc1"></span>
+<p>Step 2) Click button:</p>
+<input type="button" id="censorpls" onclick="censor()" value="Remove LoporritSync and Snapper references">
+<p>Step 3) Copy censored log file from here:</p>
+<textarea id="log2" rows=10 cols=100 readonly></textarea> <span id="lc2"></span>
+<p id="cstatus">Status: Not run yet</p>
